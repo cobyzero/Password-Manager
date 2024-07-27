@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
         return GetMaterialApp(
           title: 'Material App',
           getPages: getRouter,
-          initialRoute: "/login",
+          initialRoute: "/auth",
           debugShowCheckedModeBanner: false,
           theme: ThemeData(fontFamily: "Poppins"),
         );

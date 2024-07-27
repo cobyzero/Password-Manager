@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:password_manager/core/colors/palette.dart';
+import 'package:sizer/sizer.dart';
 
 class Texts extends StatelessWidget {
   final String text;
@@ -66,7 +67,7 @@ class Texts extends StatelessWidget {
     this.padding,
     this.style,
     this.onTap,
-  }) : fontWeight = FontWeight.w300;
+  }) : fontWeight = FontWeight.w200;
 
   const Texts.regular(
     this.text, {
@@ -96,7 +97,7 @@ class Texts extends StatelessWidget {
           textAlign: alignment,
           style: (style ?? const TextStyle(fontFamily: "Poppins")).copyWith(
             color: color,
-            fontSize: fontSize,
+            fontSize: fontSize.sp,
             height: height,
             fontWeight: fontWeight,
             letterSpacing: letterSpacing,

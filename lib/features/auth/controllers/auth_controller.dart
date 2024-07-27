@@ -1,18 +1,21 @@
-import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:password_manager/core/widgets/util.dart';
+import 'package:password_manager/services/auth_service.dart';
 
 class AuthController extends GetxController {
-  late PageController pageController;
-  final pageIndex = 0.obs;
-  @override
-  void onInit() {
-    pageController = PageController(initialPage: 0);
+  final authService = AuthService();
 
-    pageController.addListener(
-      () {
-        pageIndex(pageController.page!.round());
-      },
-    );
-    super.onInit();
+  login() async {
+    try {
+      final bool isAuthenticate = await authService.login();
+
+      if (!isAuthenticate) {
+        throw "not authenticate";
+      }
+      Get.offNamed("/home");
+      Util.successSnackBar("Successfully authenticated");
+    } catch (e) {
+      Util.errorSnackBar("Authentication error");
+    }
   }
 }
