@@ -5,6 +5,7 @@ import 'package:password_manager/core/widgets/texts.dart';
 
 class Util {
   static void errorSnackBar(String message, {String title = 'Error'}) {
+    Get.closeAllSnackbars();
     Get.showSnackbar(
       GetSnackBar(
         titleText: Texts.bold(
@@ -36,6 +37,8 @@ class Util {
   }
 
   static void successSnackBar(String message, {String title = 'Message'}) {
+    Get.closeAllSnackbars();
+
     Get.showSnackbar(
       GetSnackBar(
         titleText: Texts.bold(

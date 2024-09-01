@@ -7,7 +7,7 @@ class AuthController extends GetxController {
 
   login() async {
     try {
-      final bool isAuthenticate = await authService.login();
+      final bool isAuthenticate = await authenticate();
 
       if (!isAuthenticate) {
         throw "not authenticate";
@@ -18,4 +18,6 @@ class AuthController extends GetxController {
       Util.errorSnackBar("Authentication error");
     }
   }
+
+  Future<bool> authenticate() async => await authService.login();
 }

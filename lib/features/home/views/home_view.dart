@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:password_manager/core/colors/palette.dart';
+import 'package:password_manager/core/models/section_model.dart';
+import 'package:password_manager/core/widgets/custom_image_button.dart';
 import 'package:password_manager/core/widgets/texts.dart';
 import 'package:password_manager/features/home/controllers/home_controller.dart';
 import 'package:password_manager/features/home/widgets/seccions_item.dart';
@@ -12,54 +14,65 @@ class HomeView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Palette.white,
+        title: const Texts.regular(
+          "Passwords",
+          fontSize: 17,
+        ),
+        leading: CustomImageButton(
+          onTap: () {
+            Get.toNamed("/profile");
+          },
+          image: "profile.png",
+        ),
+        actions: [
+          CustomImageButton(
+            onTap: () {
+              Get.toNamed("/passwordAdd");
+            },
+            image: "add.png",
+          ),
+        ],
+      ),
       backgroundColor: Palette.white,
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                IconButton(
-                  onPressed: () {
-                    Get.toNamed("/profile");
-                  },
-                  icon: Icon(
-                    Icons.person_2_outlined,
-                    size: 30.sp,
-                  ),
-                ),
-                const Texts.regular(
-                  "Passwords",
-                  fontSize: 17,
-                ),
-                IconButton(
-                  onPressed: () {
-                    Get.toNamed("/passwordAdd");
-                  },
-                  icon: Icon(
-                    Icons.add_outlined,
-                    size: 30.sp,
-                  ),
-                ),
-              ],
-            ),
-            const Expanded(
-              child: SingleChildScrollView(
+            Obx(() {
+              return SingleChildScrollView(
                 child: Column(
-                  children: [
-                    SeccionsItem(
-                      length: 2,
-                      title: "Priority",
-                    ),
-                    SeccionsItem(
-                      length: 10,
-                      title: "Work",
-                    ),
-                  ],
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: controller.sections.map(
+                    (element) {
+                      return SeccionsItem(
+                        section: element,
+                        passwords: controller.passwords
+                            .where(
+                              (p0) => p0.sectionId == element.id,
+                            )
+                            .toList(),
+                      );
+                    },
+                  ).toList(),
                 ),
-              ),
-            ),
+              );
+            }),
+            Obx(() {
+              return Expanded(
+                child: SingleChildScrollView(
+                  child: SeccionsItem(
+                    section: SectionModel(name: "All"),
+                    passwords: controller.passwords
+                        .where(
+                          (p0) => p0.sectionId == null,
+                        )
+                        .toList(),
+                  ),
+                ),
+              );
+            }),
           ],
         ).marginSymmetric(horizontal: 4.w),
       ),

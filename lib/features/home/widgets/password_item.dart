@@ -1,9 +1,13 @@
+import 'package:clipboard/clipboard.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:password_manager/core/colors/palette.dart';
 import 'package:password_manager/core/const/const.dart';
 import 'package:password_manager/core/models/password_model.dart';
+import 'package:password_manager/core/widgets/custom_image_button.dart';
 import 'package:password_manager/core/widgets/texts.dart';
+import 'package:password_manager/core/widgets/util.dart';
+import 'package:password_manager/services/auth_service.dart';
 import 'package:sizer/sizer.dart';
 
 class PasswordItem extends StatelessWidget {
@@ -16,7 +20,7 @@ class PasswordItem extends StatelessWidget {
         Expanded(
           child: GestureDetector(
             onTap: () {
-              Get.toNamed("/passwordEdit");
+              Get.toNamed("/passwordEdit", arguments: password);
             },
             child: Row(
               children: [
@@ -33,9 +37,9 @@ class PasswordItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Texts.regular(
-                        password.title,
+                        password.name,
                         fontSize: 12,
-                      ),
+                      ).marginOnly(bottom: 1.h),
                       Texts.light(
                         password.email,
                         fontSize: 10,
@@ -47,12 +51,23 @@ class PasswordItem extends StatelessWidget {
             ),
           ),
         ),
-        IconButton(
-          onPressed: () {},
-          icon: Icon(
-            Icons.copy,
-            size: 22.sp,
-          ),
+        CustomImageButton(
+          onTap: () async {
+            try {
+              final auth = await AuthService().login();
+              if (!auth) {
+                Util.errorSnackBar("Not authenticated");
+              }
+              FlutterClipboard.copy(password.password).then(
+                (value) {
+                  Util.successSnackBar("Copied to clipboard");
+                },
+              );
+            } catch (e) {
+              Util.errorSnackBar("Error in authenticated");
+            }
+          },
+          image: "copy.png",
         ),
       ],
     );

@@ -3,7 +3,7 @@ import 'package:get/get.dart';
 import 'package:password_manager/core/colors/palette.dart';
 import 'package:password_manager/core/const/const.dart';
 import 'package:password_manager/core/widgets/custom_button.dart';
-import 'package:password_manager/core/widgets/custom_dropdown_button.dart';
+import 'package:password_manager/core/widgets/custom_image_button.dart';
 import 'package:password_manager/core/widgets/custom_input_outline.dart';
 import 'package:password_manager/core/widgets/texts.dart';
 import 'package:password_manager/features/password/controllers/password_controller.dart';
@@ -15,6 +15,15 @@ class PasswordEditView extends GetView<PasswordController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Palette.white,
+        actions: [
+          CustomImageButton(
+            onTap: () {},
+            image: "trash.png",
+          ),
+        ],
+      ),
       backgroundColor: Palette.white,
       bottomNavigationBar: CustomButton(
         text: "Save password",
@@ -24,20 +33,6 @@ class PasswordEditView extends GetView<PasswordController> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const BackButton(),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.delete_outline,
-                    size: 20.sp,
-                    color: Palette.red,
-                  ),
-                ),
-              ],
-            ).marginOnly(bottom: 3.h),
             Row(
               children: [
                 CircleAvatar(
@@ -50,12 +45,12 @@ class PasswordEditView extends GetView<PasswordController> {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Texts.regular(
-                        "Adobe",
+                      Texts.regular(
+                        controller.passwordEditSelected.name,
                         fontSize: 20,
                       ).marginOnly(bottom: 1.h),
-                      const Texts.light(
-                        "adobe@gmail.com",
+                      Texts.light(
+                        controller.passwordEditSelected.email,
                         fontSize: 10,
                         color: Palette.gray,
                       ),
@@ -64,16 +59,16 @@ class PasswordEditView extends GetView<PasswordController> {
                 ),
               ],
             ).marginOnly(bottom: 3.h),
-            Obx(() {
-              return CustomDropdownButton(
-                items: controller.items,
-                value: controller.valueCheckBox(),
-                controller: controller.expansionTitleController,
-                onPressed: (e) {
-                  controller.valueCheckBox(e);
-                },
-              );
-            }).marginOnly(bottom: 2.h),
+            // Obx(() {
+            //   return CustomDropdownButton(
+            //     items: controller.items,
+            //     value: controller.valueCheckBox(),
+            //     controller: controller.expansionTitleController,
+            //     onPressed: (e) {
+            //       controller.valueCheckBox(e);
+            //     },
+            //   );
+            // }).marginOnly(bottom: 2.h),
             Row(
               children: [
                 const Texts.regular(
@@ -101,7 +96,7 @@ class PasswordEditView extends GetView<PasswordController> {
               ],
             )
           ],
-        ).marginSymmetric(horizontal: 6.w),
+        ).marginSymmetric(horizontal: 6.w).marginOnly(top: 3.h),
       ),
     );
   }
