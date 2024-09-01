@@ -5,17 +5,27 @@ import 'package:sizer/sizer.dart';
 class CustomInput extends StatelessWidget {
   const CustomInput({
     super.key,
-    required this.label,
+    this.label,
     this.controller,
+    this.keyboardType,
+    this.onChanged,
+    this.hintText,
   });
-  final String label;
+  final String? label;
   final TextEditingController? controller;
+  final TextInputType? keyboardType;
+  final Function(String)? onChanged;
+  final String? hintText;
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      keyboardType: keyboardType,
+      onChanged: onChanged,
+      cursorColor: Palette.black,
       controller: controller,
       decoration: InputDecoration(
+        hintText: hintText,
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(
             10.sp,
@@ -33,7 +43,9 @@ class CustomInput extends StatelessWidget {
           ),
         ),
         labelText: label,
-        labelStyle: const TextStyle(color: Palette.gray),
+        labelStyle: const TextStyle(
+          color: Palette.gray,
+        ),
       ),
     );
   }
